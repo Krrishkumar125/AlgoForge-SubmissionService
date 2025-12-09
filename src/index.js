@@ -7,11 +7,17 @@ const serverConfig = require("./config/serverConfig");
 
 fastify.register(app);
 
-fastify.listen({ port: serverConfig.PORT }, async (err) => {
-  if (err) {
+const start = async () => {
+  try {
+    await connectToDB();
+    await fastify.listen({ port: serverConfig.PORT });
+    console.log(
+      `Server up at port ${serverConfig.PORT} and running in ${serverConfig.NODE_ENV} mode`
+    );
+  } catch (err) {
     fastify.log.error(err);
     process.exit(1);
   }
-  await connectToDB();
-  console.log(`Server up at port ${serverConfig.PORT} and running in ${serverConfig.NODE_ENV} mode`);
-});
+};
+
+start();

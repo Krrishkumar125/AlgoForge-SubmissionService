@@ -6,7 +6,7 @@ class SubmissionRepository {
   }
 
   async createSubmission(submissionData) {
-    const submission = new this.submissionModel.create(submissionData);
+    const submission = await this.submissionModel.create(submissionData);
     return submission;
   }
 }
