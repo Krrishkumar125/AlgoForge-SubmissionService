@@ -2,14 +2,14 @@ const app = require("./app");
 
 const fastify = require("fastify")({ logger: true });
 
-const PORT = 3000;
+const serverConfig = require("./config/serverConfig");
 
 fastify.register(app);
 
-fastify.listen({ port: PORT }, (err) => {
+fastify.listen({ port: serverConfig.PORT }, (err) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
   }
-  console.log(`Server up at port ${PORT}`);
+  console.log(`Server up at port ${serverConfig.PORT} and running in ${serverConfig.NODE_ENV} mode`);
 });
