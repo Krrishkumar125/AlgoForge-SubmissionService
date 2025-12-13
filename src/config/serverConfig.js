@@ -7,4 +7,5 @@ module.exports = {
   REDIS_PORT: process.env.REDIS_PORT || "6379",
   REDIS_HOST: process.env.REDIS_HOST || "127.0.0.1",
   MONGODB_URI: process.env.MONGODB_URI,
+  PROBLEM_SERVICE_BASE_URL: process.env.PROBLEM_SERVICE_BASE_URL,
 };
