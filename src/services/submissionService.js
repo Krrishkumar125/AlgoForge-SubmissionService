@@ -12,6 +12,12 @@ class SubmissionService {
 
   async addSubmission(submissionData) {
     const problemId = submissionData.problemId;
+    const userId = submissionData.userId;
+
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
     if (!problemId) {
       throw new Error("Problem ID is required");
     }
@@ -36,7 +42,9 @@ class SubmissionService {
       "\n\n" +
       languageCodeStub.endSnippet;
 
-    const createdSubmission = await this.submissionRepository.createSubmission(submissionData);
+    const createdSubmission = await this.submissionRepository.createSubmission(
+      submissionData
+    );
     if (!createdSubmission) {
       throw new Error("Failed to create submission");
     }
@@ -44,10 +52,12 @@ class SubmissionService {
     const submissionId = createdSubmission.id;
     const response = await SubmissionProducer({
       [submissionId]: {
-          code: submissionData.code,
-          language: submissionData.language,
-          inputTestCases: problemApiResponse.data.testCases[0].input,
-          outputTestCases: problemApiResponse.data.testCases[0].output,
+        userId: userId,
+        submissionId: submissionId,
+        code: submissionData.code,
+        language: submissionData.language,
+        inputTestCases: problemApiResponse.data.testCases[0].input,
+        outputTestCases: problemApiResponse.data.testCases[0].output,
       },
     });
     return {queueResponse: response, createdSubmission};
